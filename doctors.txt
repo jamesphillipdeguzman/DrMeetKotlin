@@ -1,0 +1,6 @@
+1,Lynn,Ramos,cardiology
+2,Mark,Johnson,dermatology
+3,Chopper,R,radiology
+4,null,Xavier,mutant care
+5,Ethan,De Guzman,Surgeon
+6,Verona,Cabintoy,Massage therapy
