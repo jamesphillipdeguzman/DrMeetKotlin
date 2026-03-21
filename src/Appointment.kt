@@ -1,7 +1,7 @@
 data class Appointment(
     val id: Int,
-    val patientId: Int,
-    val doctorId: Int,
-    val date: String,
-    val reason: String,
+    var patientId: Int,
+    var doctorId: Int,
+    var date: String,
+    var reason: String,
 )

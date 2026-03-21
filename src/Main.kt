@@ -1,171 +1,183 @@
 import com.sun.org.apache.xalan.internal.lib.ExsltDatetime.date
 import java.awt.print.Printable
 import java.io.File
+import kotlin.system.exitProcess
+import kotlin.time.measureTime
 
 fun main() {
-//    Create a lists or collections
-//    val patients = mutableListOf<Patient>()
-//    val doctors = mutableListOf<Doctor>()
-//    val appointments = mutableListOf<Appointment>()
+    //    Create a lists or collections
+    //    val patients = mutableListOf<Patient>()
+    //    val doctors = mutableListOf<Doctor>()
+    //    val appointments = mutableListOf<Appointment>()
 
-    println("DrMeetKotlin successfully initialised!")
-    println("=====================================")
 
-//    Load patients and doctors first
-    val patients = File("patients.txt")
-        .takeIf { it.exists() }
-        ?.readLines()
-        ?.map {
+
+    //    Load patients and doctors first
+        val patients = File("patients.txt")
+            .takeIf { it.exists() }
+            ?.readLines()
+            ?.map {
+                val parts = it.split(",")
+                Patient(
+                    id = parts[0].toInt(),
+                    firstname = parts[1],
+                    lastname = parts[2],
+                    email = parts[3],
+                    phoneNumber = parts[4]
+                )
+            }?.toMutableList() ?: mutableListOf()
+
+        val doctors = File("doctors.txt")
+            .takeIf { it.exists() }
+            ?.readLines()
+            ?.map {
+                val parts = it.split(",")
+                Doctor(
+                    id = parts[0].toInt(),
+                    firstName = parts[1],
+                    lastName = parts[2],
+                    specialty = parts[3]
+                )
+            }?.toMutableList() ?: mutableListOf()
+        val appointments = File("appointments.txt").takeIf { it.exists() }?.readLines()?.map {
             val parts = it.split(",")
-            Patient(
+            Appointment(
                 id = parts[0].toInt(),
-                firstname = parts[1],
-                lastname = parts[2],
-                email = parts[3],
-                phoneNumber = parts[4]
+                date = parts[1],           // keep as String
+                patientId = parts[2].toInt(),
+                doctorId = parts[3].toInt(),
+                reason = parts[4]
             )
         }?.toMutableList() ?: mutableListOf()
 
-    val doctors = File("doctors.txt")
-        .takeIf { it.exists() }
-        ?.readLines()
-        ?.map {
-            val parts = it.split(",")
-            Doctor(
-                id = parts[0].toInt(),
-                firstName = parts[1],
-                lastName = parts[2],
-                specialty = parts[3]
-            )
-        }?.toMutableList() ?: mutableListOf()
-    val appointments = File("appointments.txt").takeIf { it.exists() }?.readLines()?.map {
-        val parts = it.split(",")
-        Appointment(
-            id = parts[0].toInt(),
-            date = parts[1],           // keep as String
-            patientId = parts[2].toInt(),
-            doctorId = parts[3].toInt(),
-            reason = parts[4]
-        )
-    }?.toMutableList() ?: mutableListOf()
-//    Clear patients first
-    //patients.clear()
-//
-////    Add patient data
-//    patients.add(Patient(1, "James", lastname = "Degz", email = "jamesdegz@gmail.com", phoneNumber = "1234567890" ))
-//    patients.add(Patient(2, firstname = "Emily", lastname="Smith", email = "emilysmith@hotmail.com", phoneNumber = "1234567891" ))
-//    patients.add(Patient(3, firstname = "Monkey", lastname = "D. Loofy", email = "mdloofy@gmail.com", phoneNumber = "1234567892" ))
-//
-////    Add doctor data
-//    doctors.add(Doctor(1, firstName = "Lynn", lastName = "Ramos", specialty = "cardiology"))
-//    doctors.add(Doctor(2, firstName = "Mark", lastName = "Johnson", specialty = "dermatology"))
-//    doctors.add(Doctor(3, firstName = "Chopper", lastName = "R", specialty = "radiology"))
-//    doctors.add(Doctor(4, firstName = null, lastName = "Xavier", specialty = "mutant care"))
-//
-//
-////    Create appointments
-//    appointments.add(Appointment(1, 1, 1, date = "2026-03-12 10:00", reason = "Regular checkup"))
-//    appointments.add(Appointment(2, 2, 2, date = "2026-03-15 10:00", reason = "Skin consultation"))
-//
-////    Show relationship
-//    for (appointment in appointments) {
-//        println("Appointment ${appointment.id} -> Patient ${appointment.patientId} with Doctor ${appointment.doctorId}")
-//    }
-//
-////    Display patients
-//    for (patient in patients) {
-//        println("Patient ${patient.id} -> ${patient.firstname} ${patient.lastname}")
-//
-//    }
-//
-////    Display Doctors
-//    for (doctor in doctors) {
-//        println("Doctor ${doctor.id} -> ${doctor.firstName} ${doctor.lastName}")
-//    }
-//
-////    Find a patient
-//    val patient = patients.find { it.id == 4 }
-//    if(patient != null) {
-//        println("The patient is ${patient.firstname} ${patient.lastname}")
-//    } else {
-//        println("The patient is not found")
-//    }
-//
-////    Find a doctor
-//    val doctor = doctors.find { it.id == 4 }
-//    doctor?.let {
-//        println("The doctor is ${doctor.id} ${doctor.firstName} ${doctor.lastName}")
-//    }
-//
-////    Print relationships in a nested way
-//    for (patient in patients) {
-//        println("${patient.firstname} has an appointment with ")
-////        Find only patients with a doctor's appointment (i.e., not everyone in the patients list has an appointment with a doctor)
-//        val patientAppointments = appointments.filter { appointment -> appointment.patientId == patient.id} // filter appointment for this patient only
-////        Find the doctor who's got an appointment with the patient and display to the console
-//        for (appointment in patientAppointments) {
-//            val doctor = doctors.find { doctor -> doctor.id == appointment.doctorId }  // find the corresponding doctor
-//            println(" - Doctor: ${doctor?.firstName} ${doctor?.lastName} with specialty ${doctor?.specialty} and reason of ${appointment.reason}")
-//        }
-//    }
+        println("DrMeetKotlin successfully initialised!")
+        println("=====================================")
 
-//  Print menu for CRUD operations on DrMeet
-    println("++++++++++++++++++")
-    println("Please select from menu")
-    println("[1] - NEW")
-    println("[2] - SEARCH")
-    println("[3] - UPDATE")
-    println("[4] - REMOVE")
-    println("[-1] - EXIT")
+        var running = true
 
-    println(">>: ")
-    val userInput = readLine() ?: ""
-    when (userInput) {
-        "1" -> {
-            println("[1] - ADD PATIENT")
-            println("[2] - ADD DOCTOR")
-            println("[3] - ADD APPOINTMENT")
-            println("[-1] - EXIT")
+        while (running) {
+            //  Print menu for CRUD operations on DrMeet
+            println("++++++++++++++++++")
+            println("Please select from menu")
+            println("[1] - NEW")
+            println("[2] - SHOW")
+            println("[3] - UPDATE")
+            println("[4] - REMOVE")
+            println("[-1] - BACK/EXIT")
 
             print(">>: ")
-            val addInput = readLine() ?: ""
+            val userInput = readLine() ?: ""
+            when (userInput) {
+                "1" -> {
+                    println("[1] - PATIENT")
+                    println("[2] - DOCTOR")
+                    println("[3] - APPOINTMENT")
+                    println("[-1] - BACK/EXIT")
 
-            when (addInput) {
-                "1" -> addData(patients, doctors, appointments, type = "patient")
-                "2" -> addData(patients, doctors, appointments, type = "doctor")
-                "3" -> addData(patients, doctors, appointments, type = "appointment")
+                    print(">>: ")
+                    val userInput = readLine() ?: ""
 
+                    when (userInput) {
+                        "1" -> addData(patients, doctors, appointments, type = "patient")
+                        "2" -> addData(patients, doctors, appointments, type = "doctor")
+                        "3" -> addData(patients, doctors, appointments, type = "appointment")
+
+                    }
+                }
+                "2" -> {
+                    println("[1] - PATIENTS")
+                    println("[2] - DOCTORS")
+                    println("[3] - APPOINTMENTS")
+                    println("[-1] - BACK/EXIT")
+
+                    print(">>: ")
+                    val userInput = readLine() ?: ""
+
+                    when (userInput) {
+                        "1" -> showData(patients, doctors, appointments, type = "patient")
+                        "2" -> showData(patients, doctors, appointments, type = "doctor")
+                        "3" -> showData(patients, doctors, appointments, type = "appointment")
+
+                    }
+                }
+                "3" -> {
+                    println("[1] - PATIENT")
+                    println("[2] - DOCTOR")
+                    println("[3] - APPOINTMENT")
+                    println("[-1] - BACK/EXIT")
+
+                    print(">>: ")
+                    val userInput = readLine() ?: ""
+
+                    when (userInput) {
+                        "1" -> updateData(patients, doctors, appointments, "patient")
+                        "2" -> updateData(patients, doctors, appointments, "doctor")
+                        "3" -> updateData(patients, doctors, appointments, "appointment")
+                    }
+                }
+                "4" -> {
+                    println("[1] - PATIENT")
+                    println("[2] - DOCTOR")
+                    println("[3] - APPOINTMENT")
+                    println("[-1] - BACK/EXIT")
+
+                    print(">>: ")
+                    val userInput = readLine() ?: ""
+
+                    when (userInput) {
+                        "1" -> deleteData(patients, doctors, appointments, "patient")
+                        "2" -> deleteData(patients, doctors, appointments, "doctor")
+                        "3" -> deleteData(patients, doctors, appointments, "appointment")
+                    }
+                }
+
+                "-1" -> {
+                    println("Exiting DrMeetKotlin...Bye!")
+                    exitProcess(-1)
+                    running = false
+                }
+                else -> println("Invalid input! Please enter (1-4) or -1 to exit...")
             }
         }
-         "2" -> {
-             println("[1] - SEARCH PATIENT")
-             println("[2] - SEARCH DOCTOR")
-             println("[3] - SEARCH APPOINTMENT")
-             println("[-1] - EXIT")
-         }
-        "3" -> {
-            println("[1] - UPDATE PATIENT")
-            println("[2] - UPDATE DOCTOR")
-            println("[3] - UPDATE APPOINTMENT")
-            println("[-1] - EXIT")
-        }
-        "4" -> {
-            println("[1] - REMOVE PATIENT")
-            println("[2] - REMOVE DOCTOR")
-            println("[3] - REMOVE APPOINTMENT")
-            println("[-1] - EXIT")
 
-            print(">>: ")
-            val removeInput = readLine() ?: ""
 
-            when (removeInput) {
-                "1" -> deleteData(patients,"patient")
-            }
-        }
+
     }
 
 
-    }
+// ============================================================
+// ===== SAVE PATIENTS, DOCTORS, AND APPOINTMENTS
+// ============================================================
+
+
+fun savePatients(patients: List<Patient>) {
+    File("patients.txt").writeText(
+        patients.joinToString("\n") {
+            "${it.id},${it.firstname.trim()},${it.lastname?.trim()},${it.email?.trim()},${it.phoneNumber?.trim()}"
+        }
+    )
+}
+
+fun saveDoctors(doctors: List<Doctor>) {
+    File("doctors.txt").writeText(
+        doctors.joinToString("\n") {
+            "${it.id},${it.firstName?.trim()},${it.lastName.trim()},${it.specialty.trim()}"
+        }
+    )
+}
+
+fun saveAppointments(appointments: List<Appointment>) {
+    File("appointments.txt").writeText(
+        appointments.joinToString("\n") {
+            "${it.id},${it.date.trim()},${it.patientId},${it.doctorId},${it.reason.trim()}"
+        }
+    )
+}
+
+
+// ============================================================
+// ===== [1] - NEW: ADD NEW DATA FOR PATIENTS, DOCTORS, AND APPOINTMENTS
+// ============================================================
 
     fun addPatient(
         patients: MutableList<Patient>,
@@ -176,11 +188,13 @@ fun main() {
         phoneNumber: String?
     ) {
         val patient = Patient(id, firstname = firstname, lastname = lastname, email = email, phoneNumber = phoneNumber)
-        patients.add(patient)
-        println("Patient ${patient.firstname} ${patient.lastname} successfully added!")
 
-        // Save the patient data without overwriting
-        File("patients.txt").appendText("${patient.id},${patient.firstname},${patient.lastname},${patient.email},${patient.phoneNumber}\n")
+        // Add a new patient
+        patients.add(patient)
+        // Save data
+        savePatients(patients)
+        // Display success message to console
+        println("Patient ${patient.firstname} ${patient.lastname} successfully added!")
 
     }
 
@@ -192,11 +206,13 @@ fun main() {
         specialty: String,
     ) {
         val doctor = Doctor(id, firstName = firstName, lastName = lastName, specialty = specialty)
-        doctors.add(doctor)
-        println("Doctor ${doctor.firstName} ${doctor.lastName} successfully added!")
 
-        // Save the doctor data without overwriting
-        File("doctors.txt").appendText("${doctor.id},${doctor.firstName},${doctor.lastName},${doctor.specialty}\n")
+        // Add a new patient
+        doctors.add(doctor)
+        // Save data
+        saveDoctors(doctors)
+        // Display success message to console
+        println("Doctor ${doctor.firstName} ${doctor.lastName} successfully added!")
 
     }
 
@@ -209,11 +225,13 @@ fun main() {
         reason: String
     ) {
         val appointment = Appointment(id, patientId = patientId, doctorId = doctorId, date = date, reason = reason)
-        appointments.add(appointment)
-        println("Appointment ${appointment.id} -> Patient ${appointment.patientId} with Doctor ${appointment.doctorId} successfully added!")
 
-        // Save the appointment data without overwriting
-        File("appointments.txt").appendText("${appointment.id},${appointment.date},${appointment.patientId},${appointment.doctorId},${appointment.reason}\n")
+        // Add a new patient
+        appointments.add(appointment)
+        // Save data
+        saveAppointments(appointments)
+        // Display success message to console
+        println("Appointment ${appointment.id} -> Patient ${appointment.patientId} with Doctor ${appointment.doctorId} successfully added!")
 
     }
 
@@ -263,21 +281,218 @@ fun main() {
         }
     }
 
+
+// ============================================================
+// ===== [2] - SHOW: DISPLAY DATA FOR PATIENTS, DOCTORS, AND APPOINTMENTS
+// ============================================================
+
+
+// Generic function which accepts a mutable list and a string
+    fun showData(patients: MutableList<Patient>, doctors: MutableList<Doctor>, appointments: MutableList<Appointment>, type: String) {
+        when(type) {
+            "patient" -> {
+               for (patient in patients) {
+                   println("Patient ${patient.id} -> ${patient.firstname} ${patient.lastname}")
+               }
+
+            }
+            "doctor" -> {
+                for (doctor in doctors) {
+                    println("Doctor ${doctor.id} -> ${doctor.firstName} ${doctor.lastName}")
+                }
+            }
+            "appointment" -> {
+                for (patient in patients) {
+                    println("${patient.firstname} has an appointment with ")
+                    //        Find only patients with a doctor's appointment (i.e., not everyone in the patients list has an appointment with a doctor)
+                    val patientAppointments =
+                        appointments.filter { appointment -> appointment.patientId == patient.id } // filter appointment for this patient only
+                    //        Find the doctor who's got an appointment with the patient and display to the console
+                    for (appointment in patientAppointments) {
+                        val doctor =
+                            doctors.find { doctor -> doctor.id == appointment.doctorId }  // find the corresponding doctor
+                        println(" - Doctor: ${doctor?.firstName} ${doctor?.lastName} with specialty ${doctor?.specialty} and reason of ${appointment.reason}")
+                    }
+                }
+            }
+        }
+    }
+
+
+// ============================================================
+// ===== [3] - UPDATE: MODIFY DATA FOR PATIENTS, DOCTORS, AND APPOINTMENTS
+// ============================================================
+
+
+    fun updatePatient(patients: MutableList<Patient>) {
+        println("Enter the id of the patient to update: ")
+        val id = readLine()?.toIntOrNull() ?: run {
+            println("Invalid id!")
+            return
+        }
+
+        // Sanity check: is the patient in the database?
+        val patient = patients.find { it.id == id }
+
+        if(patient == null) {
+            println("The patient with id $id not found!")
+            return
+        }
+
+        println("Please leave blank to keep current value.")
+
+        println("First name: [${patient.firstname}]")
+        val firstname = readLine()?.trim()
+        if (!firstname.isNullOrBlank()) patient.firstname = firstname
+
+        println("Last name: [${patient.lastname}]")
+        val lastname = readLine()?.trim()
+        if (!lastname.isNullOrBlank()) patient.lastname = lastname
+
+        println("Email: [${patient.email}]")
+        val email = readLine()?.trim()
+        if (!email.isNullOrBlank()) patient.email = email
+
+        println("Phone: [${patient.phoneNumber}]")
+        val phone = readLine()?.trim()
+        if (!phone.isNullOrBlank()) patient.phoneNumber = phone
+
+        // Save changes
+        savePatients(patients)
+        println("Patient with id ${patient.id} successfully updated!")
+    }
+
+    fun updateDoctor(doctors: MutableList<Doctor>) {
+        println("Enter the id of the doctor to update: ")
+        val id = readLine()?.toIntOrNull() ?: run {
+            println("Invalid id!")
+            return
+        }
+
+        // Sanity check: is the patient in the database?
+        val doctor = doctors.find { it.id == id }
+
+        if(doctor == null) {
+            println("The doctor with id $id not found!")
+            return
+        }
+
+        println("Please leave blank to keep current value.")
+
+        println("First name: [${doctor.firstName}]")
+        val firstName = readLine()?.trim()
+        if (!firstName.isNullOrBlank()) doctor.firstName = firstName
+
+        println("Last name: [${doctor.lastName}]")
+        val lastName = readLine()?.trim()
+        if (!lastName.isNullOrBlank()) doctor.lastName = lastName
+
+        println("Specialty: [${doctor.specialty}]")
+        val specialty = readLine()?.trim()
+        if (!specialty.isNullOrBlank()) doctor.specialty = specialty
+
+        // Save changes
+        saveDoctors(doctors)
+        println("Doctor with id ${doctor.id} successfully updated!")
+    }
+
+    fun updateAppointment(appointments: MutableList<Appointment>) {
+        println("Enter the id of the appointment to update: ")
+        val id = readLine()?.toIntOrNull() ?: run {
+            println("Invalid id!")
+            return
+        }
+
+        // Sanity check: is the patient in the database?
+        val appointment = appointments.find { it.id == id }
+
+        if(appointment == null) {
+            println("The appointment with id $id not found!")
+            return
+        }
+
+        println("Please leave blank to keep current value.")
+
+        println("Patient ID: [${appointment.patientId}]")
+        val patientId = readLine()?.toIntOrNull()
+        if (patientId != null) appointment.patientId = patientId
+
+        println("Doctor ID: [${appointment.doctorId}]")
+        val doctorId = readLine()?.toIntOrNull()
+        if (doctorId != null) appointment.doctorId = doctorId
+
+        println("Date: [${appointment.date}]")
+        val date = readLine()?.trim()
+        if (!date.isNullOrBlank()) appointment.date = date
+
+        println("Reason: [${appointment.reason}]")
+        val reason = readLine()?.trim()
+        if (!reason.isNullOrBlank()) appointment.reason = reason
+
+        // Save changes
+        saveAppointments(appointments)
+        println("Appointment with id ${appointment.id} successfully updated!")
+    }
+
+    fun updateData(patients: MutableList<Patient>, doctors: MutableList<Doctor>, appointments: MutableList<Appointment>, type: String) {
+        when(type) {
+            "patient" -> updatePatient(patients)
+            "doctor" -> updateDoctor(doctors)
+            "appointment" -> updateAppointment(appointments)
+        }
+    }
+
+
+// ============================================================
+// ===== [4] - REMOVE: DELETE DATA FOR PATIENTS, DOCTORS, AND APPOINTMENTS
+// ============================================================
+
     fun deletePatient(patients: MutableList<Patient>, id: Int) {
-        val removed = patients.removeIf { it.id == id }
+        val removed = patients.removeIf { it.id == id } // remove a patient by ID
         if(removed) {
+
+            savePatients(patients)
             println("Patient with ID $id successfully deleted!")
+
         }
         else {
             println("Patient with ID $id not found!")
         }
     }
 
-    fun deleteData(patients: MutableList<Patient>, deleteItemName: String) {
+    fun deleteDoctor(doctors: MutableList<Doctor>, id: Int) {
+        val removed = doctors.removeIf { it.id == id } // remove a doctor by ID
+        if(removed) {
+
+            saveDoctors(doctors)
+            println("Doctor with ID $id successfully deleted!")
+
+        }
+        else {
+            println("Doctor with ID $id not found!")
+        }
+    }
+
+    fun deleteAppointment(appointments: MutableList<Appointment>, id: Int) {
+        val removed = appointments.removeIf { it.id == id } // remove a doctor by ID
+        if(removed) {
+
+            saveAppointments(appointments)
+            println("Appointment with ID $id successfully deleted!")
+
+        }
+        else {
+            println("Appointment with ID $id not found!")
+        }
+    }
+
+
+    fun deleteData(patients: MutableList<Patient>, doctors: MutableList<Doctor>, appointments: MutableList<Appointment>, deleteItemName: String) {
         when (deleteItemName) {
             "patient" -> {
                 println("Enter the ID of the patient to delete:")
                 val itemToDelete = readLine() ?: ""
+                print(">>:")
                 val id = itemToDelete.toIntOrNull() ?: 0
                 if(id != null) {
                     deletePatient(patients, id)
@@ -287,10 +502,26 @@ fun main() {
 
             }
             "doctor" -> {
-                 println("Enter the doctor ID to delete:")
+                println("Enter the doctor ID to delete:")
+                val itemToDelete = readLine() ?: ""
+                print(">>:")
+                val id = itemToDelete.toIntOrNull() ?: 0
+                if(id != null) {
+                    deleteDoctor(doctors, id)
+                } else {
+                    println("Doctor with ID $id not found!")
+                }
             }
             "appointment" -> {
                 println("Enter the appointment ID to delete:")
+                val itemToDelete = readLine() ?: ""
+                print(">>:")
+                val id = itemToDelete.toIntOrNull() ?: 0
+                if(id != null) {
+                    deleteAppointment(appointments, id)
+                } else {
+                    println("Doctor with ID $id not found!")
+                }
             }
         }
     }
