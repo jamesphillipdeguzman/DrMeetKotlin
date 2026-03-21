@@ -1,7 +1,7 @@
 1,James,Degz,jamesdegz@gmail.com,1234567890
 2,Emily,Smith,emilysmith@hotmail.com,1234567891
 3,Monkey,D. Loofy,mdloofy@gmail.com,1234567892
-4,Angela,Cabintoy,ac@yahoo.com,2423
-5,Jarom Phillip,De Guzman,jaromdg@gmail.com,1234213
-7,Marie,Iriving,marieirving@gmail.com,123456
-8,Jacob,irving,jacobirving@gmail.com,832490
+4,Angela,Cabs,ac@yahoo.com,2423
+5,JP,Degz,jaromdg@gmail.com,1234213
+7,Marie,Irv,marieirving@gmail.com,123456
+8,Jacob,Irv,jacobirving@gmail.com,832490

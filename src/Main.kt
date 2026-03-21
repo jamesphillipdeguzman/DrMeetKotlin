@@ -240,11 +240,11 @@ fun saveAppointments(appointments: List<Appointment>) {
         when(type) {
             "patient" -> {
                 println("Enter patient first name:")
-                val firstName = readLine() ?: ""
+                val firstName = (readLine() ?: "").trim().toTitleCase()
                 println("Enter patient last name:")
-                val lastname = readLine() ?: ""
+                val lastname = (readLine() ?: "").trim().toTitleCase()
                 println("Enter patient email:")
-                val email = readLine() ?: ""
+                val email = (readLine() ?: "").trim().lowercase()
                 println("Enter patient phone:")
                 val phoneNumber = readLine() ?: ""
 
@@ -342,15 +342,15 @@ fun saveAppointments(appointments: List<Appointment>) {
         println("Please leave blank to keep current value.")
 
         println("First name: [${patient.firstname}]")
-        val firstname = readLine()?.trim()
+        val firstname = readLine()?.trim()?.toTitleCase()
         if (!firstname.isNullOrBlank()) patient.firstname = firstname
 
         println("Last name: [${patient.lastname}]")
-        val lastname = readLine()?.trim()
+        val lastname = readLine()?.trim()?.toTitleCase()
         if (!lastname.isNullOrBlank()) patient.lastname = lastname
 
         println("Email: [${patient.email}]")
-        val email = readLine()?.trim()
+        val email = readLine()?.trim()?.lowercase()
         if (!email.isNullOrBlank()) patient.email = email
 
         println("Phone: [${patient.phoneNumber}]")
@@ -380,15 +380,15 @@ fun saveAppointments(appointments: List<Appointment>) {
         println("Please leave blank to keep current value.")
 
         println("First name: [${doctor.firstName}]")
-        val firstName = readLine()?.trim()
+        val firstName = readLine()?.trim()?.toTitleCase()
         if (!firstName.isNullOrBlank()) doctor.firstName = firstName
 
         println("Last name: [${doctor.lastName}]")
-        val lastName = readLine()?.trim()
+        val lastName = readLine()?.trim()?.toTitleCase()
         if (!lastName.isNullOrBlank()) doctor.lastName = lastName
 
         println("Specialty: [${doctor.specialty}]")
-        val specialty = readLine()?.trim()
+        val specialty = readLine()?.trim()?.toTitleCase()
         if (!specialty.isNullOrBlank()) doctor.specialty = specialty
 
         // Save changes
@@ -529,3 +529,13 @@ fun saveAppointments(appointments: List<Appointment>) {
 
 
 
+// Extension function to convert a string to Title Case (works in older Kotlin versions)
+fun String.toTitleCase(): String {
+    return this.split(" ").joinToString(" ") { word ->
+        if (word.isEmpty()) {
+            word
+        } else {
+            word.substring(0, 1).uppercase() + word.substring(1).lowercase()
+        }
+    }
+}
