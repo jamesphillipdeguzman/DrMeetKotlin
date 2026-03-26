@@ -1,3 +1,5 @@
+package com.example
+
 data class Appointment(
     val id: Int,
     var patientId: Int,
