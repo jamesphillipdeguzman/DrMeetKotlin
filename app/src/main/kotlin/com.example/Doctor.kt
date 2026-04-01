@@ -5,4 +5,5 @@ data class Doctor(
     var firstName: String?, // allow missing firstName for doctor
     var lastName: String,
     var specialty: String,
+    var email: String,
 )

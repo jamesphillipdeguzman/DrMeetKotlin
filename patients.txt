@@ -1,8 +1,1 @@
-1,James,Degz,jamesdegz@gmail.com,1234567890
-2,Emily,Smith,emilysmith@hotmail.com,1234567891
-3,Monkey,D. Loofy,mdloofy@gmail.com,1234567892
-4,Angela,Cabs,ac@yahoo.com,2423
-5,JP,Degz,jaromdg@gmail.com,1234213
-7,Marie,Irv,marieirving@gmail.com,123456
-8,Jacob,Irv,jacobirving@gmail.com,832490
-9,Calebtong,Cabs,ccabs@gmail.com,23244
+1,Rowan,Atkinson,1980-07-01,mrbean@gmail.com,1234
