@@ -32,6 +32,11 @@ dependencies {
 
     // This dependency will help me connect my program to a cloud database.
     implementation("mysql:mysql-connector-java:8.0.33")
+
+    // For environment variables
+    implementation("io.github.cdimascio:dotenv-kotlin:6.4.1")  // dotenv
+
+
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

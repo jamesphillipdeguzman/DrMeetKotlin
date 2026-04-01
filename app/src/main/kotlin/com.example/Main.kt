@@ -12,6 +12,12 @@ fun main() {
     //    val doctors = mutableListOf<Doctor>()
     //    val appointments = mutableListOf<Appointment>()
 
+//    println("DB_USER: ${System.getenv("DB_USER")}")
+//    println("DB_PASSWORD: ${System.getenv("DB_PASSWORD")}")
+//    println("DB_HOST: ${System.getenv("DB_HOST")}")
+//    println("DB_PORT: ${System.getenv("DB_PORT")}")
+//    println("DB_NAME: ${System.getenv("DB_NAME")}")
+
 // Connect to Aiven cloud database first!
     try {
         val conn = Database.connect()
