@@ -21,6 +21,9 @@ File I/O
 
 Basic CLI (Command Line Interface)
 
+## YouTube Video Walkthrough:
+[DrMeetKotlin Explained Kotlin Language CSE310 Module 2 Part 2 of 3](https://youtu.be/OztZ0NosV1Y?si=H6tmB57A4s95eb5f)
+
 ## Development Environment
 
 IntelliJ IDEA (or any Kotlin IDE)
