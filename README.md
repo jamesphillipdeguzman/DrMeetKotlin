@@ -24,6 +24,9 @@ Basic CLI (Command Line Interface)
 ## YouTube Video Walkthrough:
 [DrMeetKotlin Explained Kotlin Language CSE310 Module 2 Part 2 of 3](https://youtu.be/OztZ0NosV1Y?si=H6tmB57A4s95eb5f)
 
+## YouTube Video Walkthrough (Updated for Module 3):
+[DrMeetKotlin with Cloud DB Explained CSE310 Module 3 Part 3 of 3](https://youtu.be/4J94vkBMKU8)
+
 ## Development Environment
 
 IntelliJ IDEA (or any Kotlin IDE)
